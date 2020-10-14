@@ -5,9 +5,9 @@ date: "10/8/2020"
 output: html_document
 ---
 
-## Who am I? :man_technologist:
+### Who am I?
 
-My name is Serhan Bayram. I graduated from Bilkent University Industrial Engineering Department in 2016. Currently I am working as Business Intelligence Analyst at ModaCruz, an e-commerce company, mostly focused on second-hand. My main responsibilities are: 
+My name is Serhan Bayram. I graduated from Bilkent University Industrial Engineering Department in 2016. Currently I am working as Business Intelligence Analyst at ModaCruz, an e-commerce company, mostly focused on second-hand. My main responsibilities are:
 
 * Analyzing company’s data in order to assist decision making processes 
 * Developing data analysis models and gathering actionable insights  
@@ -18,7 +18,6 @@ My data interests started in my university years. My major is mostly related wit
 
 I am planning to use my data science skills to offer more personalized experience to our users in order to increase revenue and retention.
 
-My Linkedin profile can be reached to the link below.
+My Linkedin profile can be found [here](https://www.linkedin.com/in/serhanbayram/).
 
-[My Linkedin Profile](https://www.linkedin.com/in/serhanbayram/)
-
+Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/).
