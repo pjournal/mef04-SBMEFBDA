@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Welcome to My Progress Journal
 
 My First Assignment (Markdown Assignment) can be found [here](FirstAssignment.html).
 
