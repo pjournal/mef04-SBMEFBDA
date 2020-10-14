@@ -5,22 +5,20 @@ date: "10/8/2020"
 output: html_document
 ---
 
-## Who am I?
+## Who am I? :man_technologist:
 
-My name is Serhan Bayram. I graduated from Bilkent University Industrial Engineering Department in 2016.
+My name is Serhan Bayram. I graduated from Bilkent University Industrial Engineering Department in 2016. Currently I am working as Business Intelligence Analyst at ModaCruz, an e-commerce company, mostly focused on second-hand. My main responsibilities are: 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+* Analyzing company’s data in order to assist decision making processes 
+* Developing data analysis models and gathering actionable insights  
+* Visualizing data 
+* Preparing regular and ad-hoc reports
 
-```{r cars}
-summary(cars)
-```
+My data interests started in my university years. My major is mostly related with data, and I saw the power and the future of the data. Also, in one of my internships I had a chance to get involved with data analysis and data visualization. After that internship I decided to improve myself in this field. 
 
-## Including Plots
+I am planning to use my data science skills to offer more personalized experience to our users in order to increase revenue and retention.
 
-You can also embed plots, for example:
+My Linkedin profile can be reached to the link below.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+[My Linkedin Profile](https://www.linkedin.com/in/serhanbayram/)
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
