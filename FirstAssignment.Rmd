@@ -1,11 +1,11 @@
 ---
-title: "First Assignment"
+title: "Assignment #1 - RMarkdown"
 author: "Serhan Bayram"
-date: "10/8/2020"
+date: "10/18/2020"
 output: html_document
 ---
 
-### Who am I?
+### __Who am I?__
 
 My name is Serhan Bayram. I graduated from Bilkent University Industrial Engineering Department in 2016. Currently I am working as Business Intelligence Analyst at ModaCruz, an e-commerce company, mostly focused on second-hand. My main responsibilities are:
 
@@ -18,6 +18,31 @@ My data interests started in my university years. My major is mostly related wit
 
 I am planning to use my data science skills to offer more personalized experience to our users in order to increase revenue and retention.
 
-My Linkedin profile can be found [here](https://www.linkedin.com/in/serhanbayram/).
+[My Linkedin profile](https://www.linkedin.com/in/serhanbayram/)
+
+### useR! 2020 - metashiny: build Shiny apps with a Shiny app
+
+In this session a useful package named __metashiny__ is described. This package helps users to create Shiny apps very easily. Actually its best part is that, in order to create a Shiny app with metashiny, you do not need to have any coding skills. This package has an point and click interface, which allows the users to create an app by selecting some variables. In the video it is mentioned that this package is currently in development process. For the future, Package Dependencies, Drag and Drop interface and Platform-agnostic Deployment are planned developments. 
+
+[Video Link](https://www.youtube.com/watch?v=0hmQer9l4eY)
+
+### R Post #1 - 
+
+
+
+[Video Link]()
+
+### R Post #2 - Estimating individual Customer Lifetime Values with R: The CLVTools Package
+
+
+
+[Video Link](https://www.youtube.com/watch?v=KJCYjjWNgLM)
+
+### R Post #3 - 
+
+
+
+[Video Link]()
+
 
 Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/).
