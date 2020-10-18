@@ -1,6 +1,8 @@
 ## Welcome to My Progress Journal
 
-My First Assignment (Markdown Assignment) can be found [here](FirstAssignment.html).
+- Assignment #1
+[RMarkdown Assignment](FirstAssignment.html).
+
 
 You can use the [editor on GitHub](https://github.com/pjournal/gh-pages-template/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
