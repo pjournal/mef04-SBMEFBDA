@@ -26,23 +26,32 @@ In this session a useful package named __metashiny__ is described. This package 
 
 [Video Link](https://www.youtube.com/watch?v=0hmQer9l4eY)
 
-### R Post #1 - 
+### R Post #1 - Association Rule Mining – The Apriori Algorithm
 
+In this article, the main purpose is to identify item pairs which are more likely to be purchased together. Thus, we can offer specific products to our customers by checking their shopping carts or redesign our store. To do this, a transaction dataset is used and three measures of association is defined, support, confidence and lift. 
 
+Support is the number of transactions which an item or an itemset is bought. Confidence is the measurement of likelihood that an itemset is purchased when another itemset is purchased. Lift measure is to control the popularity of items in order to prevent randomness. After all measures are set, Brute Force Rule Mining method is applied. However, there to many possiblities in this method and it is computationally infeasible. Therefore, in order to eliminate some options Apriori Algrorith is used. 
 
-[Video Link]()
+This algorithm combines itemset and check whether there are not less than minimum Support point and works until there is no itemset which is less than minimum support.
+In the end, we receive our itemset and use it in order to increase our sales.
 
-### R Post #2 - Estimating individual Customer Lifetime Values with R: The CLVTools Package
+[Article Link](https://oliviapointon.wordpress.com/2019/11/02/association-rule-mining-the-apriori-algorithm/)
 
+### R Post #2 - Estimating individual Customer Lifetime Values with R
 
+Estimating a customer's lifetime value (CLV) is very beneficial for a company. If we know (or estimate accurately) every customers' value, we can classify them. We would know which customer will bring us more profit or which customer is more likely to be loyal. This way, we can choose more efficient ways to reach our customers and optimize our marketing spendings. We can try to activate our customers with different methods. Also, by aggregating every customers' lifetime value, we can see the performance of our decisions. Let's say, decreasing values is probably a signal of unsuccessful loyalty program.
+
+In order to calculate CLV by considering multiple variables, we can use The CLVTools Package. This package, combines customers churn behavior with customers purchase behavior. It has several types of settings for different customers segments and businesses. Users can select the setting which fits to their needs.
+
+This package takes transactional data as input, which are Unique Customer Id, Order Date and Price. Also, time-varying factor can be added to a model. After giving the inputs the package estimates the parameters and predicts CLVs for each customer.
 
 [Video Link](https://www.youtube.com/watch?v=KJCYjjWNgLM)
 
-### R Post #3 - 
+### R Post #3 - Customer Segmentation and Strategy using RFM Analysis in RStudio
 
+In this article an RFM analysis is explained by using R. RFM analysis is based on three metrics which are Recency, the recency of last order (R), Frequency, how many times a user made order (F) and Monetary, how much a user spent (M). Based on the quartiles of each metric, every user is represented by an RFM score. Based on their score, each user is assigned to different segments. Each segment represent the customers current status. For instance in Can't Lose segment the RFM scores are 134, 143, 144, 234, 242, 243, 244 which tells us that these customers were good buyers in the past but recently they did not make any purchases. Therefore, special actions for them would make them buy new products from us. This method allows us to make efficient and segment specific marketing campaigns and increase customer retention.
 
-
-[Video Link]()
+[Article Link](https://medium.com/@triimamwicaksono_47213/customer-segmentation-and-strategy-using-rfm-analysis-in-rstudio-be79118c8235)
 
 
 Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/).
