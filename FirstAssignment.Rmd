@@ -5,7 +5,7 @@ date: "10/18/2020"
 output: html_document
 ---
 
-### __Who am I?__
+### Who am I?
 
 My name is Serhan Bayram. I graduated from Bilkent University Industrial Engineering Department in 2016. Currently I am working as Business Intelligence Analyst at ModaCruz, an e-commerce company, mostly focused on second-hand. My main responsibilities are:
 
