@@ -54,4 +54,4 @@ In this article an RFM analysis is explained by using R. RFM analysis is based o
 [Article Link](https://medium.com/@triimamwicaksono_47213/customer-segmentation-and-strategy-using-rfm-analysis-in-rstudio-be79118c8235)
 
 
-Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/).
+Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/)

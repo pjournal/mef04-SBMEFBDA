@@ -147,3 +147,4 @@ rsp_game("scissors")
 rsp_game("paper")
 ```
 
+Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/)
