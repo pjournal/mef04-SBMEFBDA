@@ -1,4 +1,4 @@
-# About This Repository
+# BDA 503 - Progress Journal
 
 Serhan's BDA 503 progress journal for BDA 503 Course. 
 
