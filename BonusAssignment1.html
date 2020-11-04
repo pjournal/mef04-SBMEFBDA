@@ -12,7 +12,7 @@
 <meta name="author" content="Serhan Bayram" />
 
 
-<title>Assignment #2 - ggplot2</title>
+<title>Bonus Assignment - ggplot2</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -384,15 +384,26 @@ summary {
 
 
 
-<h1 class="title toc-ignore">Assignment #2 - ggplot2</h1>
+<h1 class="title toc-ignore">Bonus Assignment - ggplot2</h1>
 <h4 class="author">Serhan Bayram</h4>
 <h4 class="date">11/4/2020</h4>
 
 </div>
 
 
-<div id="reading-data" class="section level3">
-<h3>Reading Data</h3>
+<div id="importing-libraries-reading-data" class="section level3">
+<h3>Importing Libraries &amp; Reading Data</h3>
+<pre class="r"><code>library(tidyverse)
+library(readxl)
+library(dplyr)
+library(ggplot2)</code></pre>
+<p>First 130 rows of the files needs to be read. So, we use <code>n_max = 130</code> parameter here:</p>
+<pre class="r"><code>read_df &lt;- read_xlsx(&quot;/Users/Serhan/Desktop/EVDS_istanbul_property_data.xlsx&quot;, sheet = &quot;EVDS&quot;, n_max = 130)</code></pre>
+<p>Renaming columns for better understanding:</p>
+<pre class="r"><code>my_df &lt;- read_df %&gt;% select(Date = 1, Total = 2, Mortgage = 3, FirstHand = 4, 
+                            SecondHand = 5, Foreign = 6, NewHousePriceIndex = 7, 
+                            HousePriceIndex = 8, UnitPrice = 9)</code></pre>
+<p>Back to my <a href="https://pjournal.github.io/mef04-SBMEFBDA/">Progress Journal</a></p>
 </div>
 
 

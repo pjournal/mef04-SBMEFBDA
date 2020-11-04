@@ -1,0 +1,39 @@
+---
+title: 'Bonus Assignment - ggplot2'
+author: "Serhan Bayram"
+date: "11/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Importing Libraries & Reading Data
+
+```{r, results='hide', message=FALSE}
+library(tidyverse)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+```
+
+First 130 rows of the files needs to be read. So, we use `n_max = 130` parameter here:
+
+```{r}
+read_df <- read_xlsx("/Users/Serhan/Desktop/EVDS_istanbul_property_data.xlsx", sheet = "EVDS", n_max = 130)
+```
+
+
+Renaming columns for better understanding:
+
+```{r}
+my_df <- read_df %>% select(Date = 1, Total = 2, Mortgage = 3, FirstHand = 4, 
+                            SecondHand = 5, Foreign = 6, NewHousePriceIndex = 7, 
+                            HousePriceIndex = 8, UnitPrice = 9)
+```
+
+
+
+
+Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/)

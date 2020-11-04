@@ -1,9 +1,0 @@
----
-title: 'Assignment #2 - ggplot2'
-author: "Serhan Bayram"
-date: "11/4/2020"
-output: html_document
----
-
-### Reading Data
-
