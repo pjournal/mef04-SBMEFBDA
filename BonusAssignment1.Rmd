@@ -1,5 +1,5 @@
 ---
-title: 'Bonus Assignment - ggplot2'
+title: 'Bonus Assignment #1 - ggplot2'
 author: "Serhan Bayram"
 date: "11/4/2020"
 output: html_document
@@ -33,7 +33,41 @@ my_df <- read_df %>% select(Date = 1, Total = 2, Mortgage = 3, FirstHand = 4,
                             HousePriceIndex = 8, UnitPrice = 9)
 ```
 
+### Evaluations
 
+#### Plot 1
 
+```{r, warning=FALSE, fig.width=10, fig.height=4}
+plot_1_df <- my_df %>% select(Date, UnitPrice) %>% arrange(Date)
+
+ggplot(plot_1_df, aes(x = Date, y = UnitPrice, group = 1, color = UnitPrice)) + 
+  geom_line() + 
+  ylab("Unit Prices - TL/m2") +
+  ggtitle("Unit Prices of Properties in Istanbul","Jan 2010 - September 2020") +
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank(), plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+```
+
+There can be made some evaluation from the plot above.
+
+* Unit price of the houses in Istanbul continuously increased from **January 2010** to **February 2019**. The biggest reason of this is the increase in interest rates. 
+* With the decrease in interest rates, unit prices started to increase again in **September 2019**.
+
+#### Plot 2
+
+```{r, warning=FALSE, fig.width=10, fig.height=4}
+plot_2_df <- my_df %>% 
+  filter(is.na(SecondHand) == FALSE) %>%
+  transmute(Date, SecondHandRatio = SecondHand / Total) %>% arrange(Date)
+
+ggplot(plot_2_df, aes(x = Date, y = SecondHandRatio, group = 1, color = SecondHandRatio)) + 
+  geom_line() + 
+  ylab("Second Hand Ratio - Percentage") +
+  ggtitle("Second Hand Property Sale Ratio in Istanbul","Jan 2013 - September 2020") +
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank(), plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+```
+
+There can be made some evaluation from the plot above.
+
+* The ratio of Second Hand Sales are started to increase dramatically in **January 2019**. This date is also mentioned in the previous evalution. Therefore, we can conclude that increase in second hand property sales first decreased the unit prices. However, since the ratio still increases, the unit prices also started to increase. 
 
 Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/)

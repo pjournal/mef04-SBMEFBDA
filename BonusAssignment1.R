@@ -25,12 +25,55 @@ glimpse(my_df)
 plot_1_df <- my_df %>% select(Date, UnitPrice) %>% arrange(Date)
 
 
-ggplot(plot_1_df, aes(x = Date, y = UnitPrice, group = 1)) + 
+plot_1_df <- my_df %>% 
+  filter(is.na(FirstHand) == FALSE & is.na(SecondHand) == FALSE) %>%
+  select(Date, FirstHand, SecondHand) %>% 
+  pivot_longer(.,-Date) 
+
+
+ggplot(plot_1_df, aes(x=Date, y=value, color=name)) + geom_line()
+
+
+
+plot_2_df <- my_df %>% 
+  filter(is.na(FirstHand) == FALSE & is.na(SecondHand) == FALSE & is.na(UnitPrice) == FALSE) %>% 
+  transmute(Date, FirstHand, SecondHand, MagnifiedUnitPrice = UnitPrice * 2)
+  
+ggplot(plot_2_df) + 
+  geom_line(aes(x=Date, y=FirstHand, group=1, color="FirstHand")) + 
+  geom_line(aes(x=Date, y=SecondHand, group=1, color="SecondHand")) + 
+  geom_line(aes(x=Date, y=MagnifiedUnitPrice, group=1, color="UnitPrice")) + 
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank())
+  #theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1))
+
+
+print(plot_1_df)
+
+
+
+
+plot_2_df <- my_df %>% 
+  filter(is.na(SecondHand) == FALSE) %>%
+  transmute(Date, SecondHandRatio = SecondHand / Total) %>% arrange(Date)
+
+ggplot(plot_2_df, aes(x = Date, y = SecondHandRatio, group = 1, color = SecondHandRatio)) + 
   geom_line() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  ylab("Second Hand Ratio - Percentage") +
+  ggtitle("Second Hand Property Sales in Istanbul","Jan 2013 - September 2020") +
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank(), plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+
+
 
 
 #Plots
+
+plot_3_df <- my_df %>% 
+  filter(is.na(Total) == FALSE) %>%
+  select(Date, Total) %>% arrange(Date)
+
+ggplot(plot_3_df, aes(x = Date, y = Total, group = 1)) + 
+  geom_line() + 
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1))
 
 
 
