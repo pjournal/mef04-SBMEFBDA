@@ -1,0 +1,12 @@
+---
+title: 'Assignment #2 - Electricity Market Prices'
+author: "Serhan Bayram"
+date: "11/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+

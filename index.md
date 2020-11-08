@@ -6,3 +6,4 @@
 
 ### Week 3
 - Bonus Assignment #1 - [ggplot2 Assignment](BonusAssignment1.html)
+- Assignment #2 - [Electricity Market Prices Assignment](SecondAssignment.html)
