@@ -181,3 +181,6 @@ For the report above, I had help from some online resources. Below, you can find
 + [Creating and modifying pie chart](https://www.r-graph-gallery.com/piechart-ggplot2.html)
 + [Creating plots by using facet](http://zevross.com/blog/2019/04/02/easy-multi-panel-plots-in-r-using-facet_wrap-and-facet_grid-from-ggplot2/)
 + [Drawing line graphs with discrete x-axis values](https://stackoverflow.com/questions/35209157/ggplot-line-plot-for-discrete-x-axis)
+
+
+Back to my [Progress Journal](https://pjournal.github.io/mef04-SBMEFBDA/)
