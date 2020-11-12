@@ -1,12 +1,183 @@
 ---
 title: 'Assignment #2 - Electricity Market Prices'
 author: "Serhan Bayram"
-date: "11/8/2020"
-output: html_document
+date: "Nov 12, 2020"
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: true
+      smooth_scroll: true
+    toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+### Introduction
 
+In this report, September 2020's electricity prices data is analysed. The dataset used in this report can be found at the link below.
+
+[EPIAS/EXIST MCP/SMP Page](https://rapor.epias.com.tr/rapor/xhtml/ptfSmfListeleme.xhtml)
+
+### Importing Libraries & Reading Data
+
+First we import the necessary libraries, read the file and assign it to `read_df` variable.
+
+```{r, results='hide', message=FALSE}
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+
+read_df <- read_csv("/Users/Serhan/Desktop/ptf-smf.csv")
+```
+```{r}
+read_df %>% glimpse()
+```
+We have a dataset of 720 rows and 6 columns. We need to modify and enrich our data in order to make more accurate analysis.
+
+
+### Data Preparation
++ Renaming columns
++ Converting Date column type from Char to Datetime
++ Extracting Hour and Day of Week values from the Date column
++ Assigning name of days to WeekDay column
++ Removing "?" sign from SMP Direction values
+
+```{r}
+elec_df <-read_df %>% 
+  transmute(Date = dmy_hm(Date), MCP, SMP, 
+            PosImbP = `Positive Imbalance Price (TL/MWh)`, 
+            NegImbP = `Negative Imbalance Price (TL/MWh)`, 
+            SMP_Dir = str_replace(`SMP Direction`, ".?", "")) %>%
+  mutate(Hours = hour(Date), WeekDay = wday(Date)) %>%
+  mutate(WeekDay = recode(WeekDay, 
+                   `2`="1. Monday",`3`="2. Tuesday",`4`="3. Wednesday",`5`="4. Thursday",
+                   `6`="5. Friday",`7`="6. Saturday",`1`="7. Sunday"))
+
+elec_df %>% glimpse() 
+```
+Now the dataset is ready to be analysed. 
+
+First we can check the distribution of SMP Directions 
+
+```{r}
+smp_dir_all <- elec_df %>% 
+  count(SMP_Dir, name = "Count") %>%
+  mutate(Percentage = round(Count / sum(Count)* 100, 0)) %>%
+  select(-Count)
+  
+ggplot(smp_dir_all, aes(x = "", y = Percentage, fill = SMP_Dir)) +
+  geom_bar(stat="identity",width = 1) +
+  coord_polar("y") +
+  geom_text(aes(label = paste0(Percentage, "%")), color = "white", position = position_stack(vjust = 0.5)) +
+  theme_void()
+```
+
+Energy Deficit has the highest occurrence proportion with 76%. This means that most of the time, the consumers predict less electricity need then the actual need. Since Energy Deficit happens more often, we expect SMPs to be higher than MCPs. So, we can draw boxplots to verify this argument.
+
+```{r}
+elec_df %>%
+  pivot_longer(cols = c(MCP,SMP), names_to = "Price_Type") %>%
+  ggplot(aes(x=Price_Type, y=value, fill=Price_Type)) +
+  geom_boxplot(outlier.shape = NA) +
+  coord_cartesian(ylim = c(150, 500)) + 
+  labs(x = "Price Type", y = "Price Value", caption = "In order to have a more understandable plot, outliers eliminated and the range is narrowed.")
+```
+
+These boxplots show that median of SMP is higher, this means SMPs have higher values and this supports the argument above.
+
+### Hour-Based Plots
+
+In this part, the data will be evaluated based on hours.
+
+Below bar charts tells us the following: 
+
++ Since electricity is mostly used between those hours, Energy Deficit mostly appears between 10 AM and 11 PM. 
++ For the same reason above, Energy Surplus mostly occurs during the night time. 
++ In Balance case occurs mostly between 1 AM and 6 AM.
+
+```{r, message=FALSE}
+hourly_smp_dir <- elec_df %>%
+  group_by(SMP_Dir, Hours) %>%
+  summarise(Count = n())
+  
+ggplot(hourly_smp_dir, aes(x = Hours, y = Count)) +
+  geom_bar(stat = "identity", aes(fill = as.factor(SMP_Dir))) +
+  facet_wrap(~ SMP_Dir) +
+  ggtitle("SMP Direction Per Hour") + 
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5)) + 
+  scale_x_continuous(breaks=seq(0,23,2))
+```
+
+
+```{r, message=FALSE}
+hourly_prices <- elec_df %>%
+  group_by(Hours) %>%
+  summarise(AverageMCP = mean(MCP), AverageSMP = mean(SMP))
+
+ggplot(hourly_prices, aes(x = Hours)) +
+  geom_line(aes(y = AverageMCP, color = "Average MCP")) +
+  geom_line(aes(y = AverageSMP, color = "Average SMP")) + 
+  ggtitle("MCP & SMP per Hour") + 
+  labs(y = "Price Values", color = "Legend") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks=seq(0,23,1))
+```
+
+It can be seen that during the night hours, Average MCP and Average SMP values are very close. This time interval corresponds to the interval which In Balance and Energy Surplus cases occur more often compared to day time. 
+
+### Day-Based Plots
+
+In this part, the data will be evaluated based on days.
+
+From the plots below , we can see that Energy Surplus mostly occurs on Saturdays.
+
+```{r, message = FALSE}
+daily_smp_dir <- elec_df %>%
+  group_by(SMP_Dir, WeekDay) %>%
+  summarise(Count = n())
+
+ggplot(daily_smp_dir, aes(x = WeekDay, y = Count)) +
+  geom_bar(stat = "identity", aes(fill = as.factor(SMP_Dir))) +
+  facet_wrap(~ SMP_Dir) +
+  ggtitle("SMP Direction Over Days") + 
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 60,vjust=1,hjust=1)) 
+```
+
+We expect MCPs are more likely to be higher on Saturdays, since Energy Surplus mostly occurs on Saturdays.  
+
+```{r, message=FALSE}
+daily_prices <- elec_df %>%
+  group_by(WeekDay) %>%
+  summarise(AverageMCP = mean(MCP), AverageSMP = mean(SMP))
+
+ggplot(daily_prices, aes(x = as.factor(WeekDay), group = 1)) +
+  geom_line(aes(y = AverageMCP, color = "Average MCP")) +
+  geom_line(aes(y = AverageSMP, color = "Average SMP")) + 
+  ggtitle("MCP & SMP Over Days") + 
+  labs(x = "Days", y = "Price Values", color = "Legend") + 
+  theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 60,vjust=1,hjust=1))
+
+```
+
+Only day, that Average MCP is higher than Average SMP is Saturday. The most Energy Surplus occurred day is Saturday, so the graphs verify each other. Also, Thursday is the least successfully predicted day. Since the lowest occurrence of In Balance and Energy Surplus are on that day. Therefore, on Thursday SMP Average has the maximum value.
+
+### Conclusion
+
+By evaluating the graphs and plots above, we see that during the hours which people use less electricity, Energy Surplus and In Balance counts are higher. Therefore we can make the following statement. Predictors are more successful at the times which the need is lesser. So we can also say that, on Saturdays people consume less energy, since it has the most successful predictions.
+
+The predictors can prevent spending more money while purchasing electricity. 76% of all balancing operations end up with Energy Deficit. Therefore, the consumption predictions need to become more accurate.
+
+### References
+
+For the report above, I had help from some online resources. Below, you can find the references list.
+
++ [RMarkdown Hints](https://bookdown.org/yihui/rmarkdown/html-document.html)
++ [Assigning day names to numeric variables](https://dplyr.tidyverse.org/reference/recode.html)
++ [Creating and modifying pie chart](https://www.r-graph-gallery.com/piechart-ggplot2.html)
++ [Creating plots by using facet](http://zevross.com/blog/2019/04/02/easy-multi-panel-plots-in-r-using-facet_wrap-and-facet_grid-from-ggplot2/)
++ [Drawing line graphs with discrete x-axis values](https://stackoverflow.com/questions/35209157/ggplot-line-plot-for-discrete-x-axis)
