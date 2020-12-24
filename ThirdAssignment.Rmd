@@ -1,0 +1,203 @@
+---
+title: "Assignment #3 - Diamonds Price Estimation"
+author: "Serhan Bayram"
+date: "Dec 24, 2020"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 3
+---
+
+## Importing Necessary Libraries
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(rpart)
+library(rpart.plot)
+library(rattle)
+library(gridExtra)
+library(corrr)
+library(knitr)
+```
+
+## Dataset
+
+The diamonds dataset consists of prices of diamonds with different properties.
+It contains 53,940 observations with 1 `price` column and 9 property columns.
+
++ `cut`, `color` and `clarity` columns are categorical.
++ `carat`, `depth`, `table`, `x`, `y` and `z` columns are numerical.
+
+```{r}
+summary(diamonds)
+```
+
+Since some of x, y and z values are equal to 0, we can exclude them from the dataset, in order to clean the dataset.
+
+```{r}
+diamonds <- diamonds %>% filter(x!=0 & y!=0 & z!=0)
+```
+
+We excluded 20 observations from the dataset.
+
+## Data Analysis
+
+In order to build a model, first we need to find the relationship of each variable with the price.
+
+For categorical columns, we can take the mean of the prices in order to compare.
+
+```{r, fig.width=10}
+
+cut_df_mean <- diamonds %>%
+  group_by(cut) %>%
+  summarise(AveragePrice = mean(price))
+
+color_df_mean <- diamonds %>%
+  group_by(color) %>%
+  summarise(AveragePrice = mean(price))
+
+clarity_df_mean <- diamonds %>%
+  group_by(clarity) %>%
+  summarise(AveragePrice = mean(price))
+
+
+cut_plot_mean <- ggplot(cut_df_mean, aes(x=cut, y=AveragePrice)) + 
+  geom_bar(stat="identity", aes(fill=cut)) +
+  theme(legend.position = "none")
+color_plot_mean <- ggplot(color_df_mean, aes(x=color, y=AveragePrice)) + 
+  geom_bar(stat="identity", aes(fill=color)) +
+  theme(legend.position = "none") + labs(y="")
+clarity_plot_mean <- ggplot(clarity_df_mean, aes(x=clarity, y=AveragePrice)) + 
+  geom_bar(stat="identity", aes(fill=clarity)) +
+  theme(legend.position = "none") + labs(y="")
+
+grid.arrange(cut_plot_mean, color_plot_mean, clarity_plot_mean, ncol=3)
+```
+
+Since the best choice for the cut is Ideal, the lowest mean price belongs to it. Also, for color and clarity, the lowest values are the best options. So, let us check the median of the prices to compare.
+
+```{r, fig.width=10}
+
+cut_df_median <- diamonds %>%
+  group_by(cut) %>%
+  summarise(MedianPrice = median(price))
+
+color_df_median <- diamonds %>%
+  group_by(color) %>%
+  summarise(MedianPrice = median(price))
+
+clarity_df_median <- diamonds %>%
+  group_by(clarity) %>%
+  summarise(MedianPrice = median(price))
+
+
+cut_plot_median <- ggplot(cut_df_median, aes(x=cut, y=MedianPrice)) + 
+  geom_bar(stat="identity", aes(fill=cut)) +
+  theme(legend.position = "none")
+color_plot_median <- ggplot(color_df_median, aes(x=color, y=MedianPrice)) + 
+  geom_bar(stat="identity", aes(fill=color)) +
+  theme(legend.position = "none") + labs(y="")
+clarity_plot_median <- ggplot(clarity_df_median, aes(x=clarity, y=MedianPrice)) + 
+  geom_bar(stat="identity", aes(fill=clarity)) +
+  theme(legend.position = "none") + labs(y="")
+
+grid.arrange(cut_plot_median, color_plot_median, clarity_plot_median, ncol=3)
+```
+
+Same case occurs here as well. The best options have the lowest median prices. We might want to consider this during building our model.
+
+Now, we can find the correlation between our numerical variables.
+
+```{r}
+corr_df <- correlate(diamonds %>% select(-cut,-clarity,-color))
+corr_df
+```
+
+We can find the significant correlations by filtering the absolute percentages.
+
+```{r, fig.align="center"}
+corr_df %>% 
+  focus(price) %>%
+  filter(abs(price) > 0.8) %>%
+  transmute(Property = term, Correlation = round(price,4))
+```
+
+Only carat, x, y and z values have above 80% of correlation. During building the model, we might want to exclude other columns.
+
+## Building Models
+
+First, we define our test and train datasets.
+
+```{r}
+set.seed(503)
+
+diamonds_test <- diamonds %>% mutate(diamond_id = row_number()) %>% 
+  group_by(cut, color, clarity) %>% sample_frac(0.2) %>% ungroup()
+
+diamonds_train <- anti_join(diamonds %>% mutate(diamond_id = row_number()), 
+                            diamonds_test, by = "diamond_id")
+```
+
+### Model 1 - CART with ANOVA
+
+```{r}
+model_1 <- rpart(price~.-diamond_id, data=diamonds_train, method = "anova")
+fancyRpartPlot(model_1, caption = "")
+printcp(model_1)
+```
+
+Now, we need to predict our test data and measure the performance of this model.
+After we test our data we get Mean Absolute Error value as 837.71.
+```{r}
+prediction_1 <- predict(model_1, diamonds_test)
+mean_abs_err_1 <- mean(abs(diamonds_test$price - prediction_1))
+print(paste0("Mean Absolute Error : ", round(mean_abs_err_1,2)))
+```
+
+### Model 2 - Generalized Linear Models
+
+```{r}
+model_2 <- glm(price~.-diamond_id, data=diamonds_train, family = Gamma(link = "identity"), start = rep(0.5, 24))
+summary(model_2)
+```
+
+Mean Absolute Error value of second model is 937.92.
+
+```{r}
+prediction_2 <- predict(model_2, diamonds_test)
+mean_abs_err_2 <- mean(abs(diamonds_test$price - prediction_2))
+print(paste0("Mean Absolute Error : ", round(mean_abs_err_2,2)))
+```
+
+### Model 3 - Linear Models
+
+```{r}
+model_3 <- lm(price~.-diamond_id, data=diamonds_train)
+summary(model_3)
+```
+
+Mean Absolute Error value of third model is 740.89.
+
+```{r}
+prediction_3 <- predict(model_3, diamonds_test)
+mean_abs_err_3 <- mean(abs(diamonds_test$price - prediction_3))
+print(paste0("Mean Absolute Error : ", round(mean_abs_err_3,2)))
+```
+
+## Conclusion
+
+Among all the models, the best one is the Linear Model since it gives the lowest Mean Absolute Error value. However, a better model can be developed in future attempts by doing feature engineering and implementing new properties to the model.
+
+## References
+
++ [Side-by-side Plots](https://stackoverflow.com/questions/1249548/side-by-side-plots-with-ggplot2)
++ [Correlation Matrix Analysis](https://www.datanovia.com/en/blog/easy-correlation-matrix-analysis-in-r-using-corrr-package/)
++ [Regression Trees](https://uc-r.github.io/regression_trees)
++ [Deciding glm Family](https://stats.stackexchange.com/questions/190763/how-to-decide-which-glm-family-to-use)
+
+Back to [my progress journal.](https://pjournal.github.io/mef04-SBMEFBDA/)
