@@ -51,7 +51,7 @@ ui <- fluidPage(
                         ticks = FALSE),
             selectInput("genres",
                         "Genres",
-                        selected = c("All",shiny_movie_set$genre)[1],
+                        selected = "All",
                         choices = c("All",unique(shiny_movie_set$genre)),
                         multiple = TRUE),
             sliderInput("votes",
