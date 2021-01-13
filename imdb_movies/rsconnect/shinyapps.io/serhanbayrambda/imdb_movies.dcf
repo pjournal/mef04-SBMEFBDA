@@ -1,0 +1,10 @@
+name: imdb_movies
+title:
+username:
+account: serhanbayrambda
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3469533
+bundleId: 4091404
+url: https://serhanbayrambda.shinyapps.io/imdb_movies/
+when: 1610553013.4519

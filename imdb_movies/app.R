@@ -1,9 +1,3 @@
-pti <- c("shiny","tidyverse","ggplot2movies")
-pti <- pti[!(pti %in% installed.packages())]
-if(length(pti)>0){
-    install.packages(pti)
-}
-
 ##########
 ### Shiny starter code
 ##########
